@@ -19,12 +19,12 @@ const follow = (follower, following, action) => {
 }
 
 const unfollow = (follower, following, action) => {
-    fetch(`http://localhost:8088/followers?followerId=${follower}&pirateId=${following}`)
+    fetch(`https://localhost:7219/followers?followerId=${follower}&pirateId=${following}`)
         .then(response => response.json())
         .then(matchArray => {
             const matchId = matchArray[0].id
 
-            fetch(`http://localhost:8088/followers/${matchId}`, {
+            fetch(`https://localhost:7219/followers/${matchId}`, {
                 method: "DELETE"
             }).then(() => action(parseInt(follower)))
         })

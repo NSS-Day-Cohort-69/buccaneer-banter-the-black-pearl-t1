@@ -428,4 +428,38 @@ app.MapGet("/followers/{id}", (int id) =>
 });
 
 
+
+app.MapGet("/followers",(int? followerId,int? pirateId)=>
+{
+    List<Follower> follower=followings.Where(f=>f.FollowerId==followerId&&f.PirateId==pirateId).ToList();
+    if(!follower.Any())
+    {
+        return Results.NotFound();
+    }
+    
+    List<FollowerDTO> followerDTO=follower.Select(follow=>new FollowerDTO
+    {
+        Id=follow.Id,
+        FollowerId=follow.FollowerId,
+        PirateID=follow.PirateId
+    }).ToList();
+
+    return Results.Ok(followerDTO);
+});
+
+app.MapDelete("/followers/{id}",(int id)=>
+{
+    Follower followerObj=followings.FirstOrDefault(f=>f.Id==id);
+
+     if(followerObj!=null)
+    {
+        followings.Remove(followerObj);
+    }
+    else
+    {
+        return Results.NotFound();
+    }
+
+    return Results.NoContent();
+});
 app.Run();
