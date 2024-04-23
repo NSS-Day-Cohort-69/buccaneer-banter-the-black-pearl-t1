@@ -6,7 +6,7 @@ import { useContext, useEffect, useRef, useState } from 'react'
 import { StoryContext } from './storylist.js'
 
 const follow = (follower, following, action) => {
-    fetch(`http://localhost:8088/followers`, {
+    fetch(`https://localhost:7219/followers`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
