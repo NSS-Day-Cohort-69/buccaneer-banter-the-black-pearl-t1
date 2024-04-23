@@ -1,3 +1,5 @@
+namespace buccaneerbantertheblackpearlt1.Models;
+
 public class Pirate
 {
     public int Id{get;set;}
