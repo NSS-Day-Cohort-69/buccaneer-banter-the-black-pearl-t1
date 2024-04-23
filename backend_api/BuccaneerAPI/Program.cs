@@ -386,5 +386,46 @@ app.MapPost("/followers",(Follower followObj)=>
     });
 });
 
+app.MapGet("/followers/{id}", (int id) =>
+{
+    List<Follower> filteredFollowers = new List<Follower>();
+    foreach (Follower follower in followings)
+    {
+        if (follower.PirateId == id)
+        {
+            follower.Pirate = pirates.FirstOrDefault(p => p.Id == follower.PirateId);
+            follower.FollowerObj = pirates.FirstOrDefault(p => p.Id == follower.FollowerId);
+            filteredFollowers.Add(follower);
+        }
+    };
+
+    return filteredFollowers.Select(f => new FollowerDTO
+    {
+        Id = f.Id,
+        PirateID = f.PirateId,
+        FollowerId = f.FollowerId,
+        PirateDTO = new PirateDTO
+        {
+            Id = f.Pirate.Id,
+            Name = f.Pirate.Name,
+            Age = f.Pirate.Age,
+            Nationality = f.Pirate.Nationality,
+            Rank = f.Pirate.Rank,
+            Ship = f.Pirate.Ship,
+            ImageURL = f.Pirate.ImageURL
+        },
+        FollowerObjDTO = new PirateDTO
+        {
+            Id = f.FollowerObj.Id,
+            Name = f.FollowerObj.Name,
+            Age = f.FollowerObj.Age,
+            Nationality = f.FollowerObj.Nationality,
+            Rank = f.FollowerObj.Rank,
+            Ship = f.FollowerObj.Ship,
+            ImageURL = f.FollowerObj.ImageURL
+        }
+    });
+});
+
 
 app.Run();
