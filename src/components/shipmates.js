@@ -7,8 +7,8 @@ const ShipMates = ({ myFavoriteScallywags }) => {
       <ul>
         {myFavoriteScallywags.map((relationship) => (
           <li className={`text-base ${styles.favorite}`} key={relationship.id}>
-            <p>{relationship?.pirate?.rank} {relationship?.pirate?.name}</p>
-            <p className='text-sm italic text-slate-400'>{relationship?.pirate?.ship}</p>
+            <p>{relationship?.pirateDTO?.rank} {relationship?.pirateDTO?.name}</p>
+            <p className='text-sm italic text-slate-400'>{relationship?.pirateDTO?.ship}</p>
           </li>
         ))}
       </ul>
