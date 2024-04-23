@@ -345,5 +345,46 @@ app.MapGet("/stories", () =>
         }
     });
 });
+// Add Follower
+app.MapPost("/followers",(Follower followObj)=>
+{
+    Pirate pirateDetails=pirates.FirstOrDefault(p=>p.Id==followObj.PirateId);
+    Pirate followerObj=pirates.FirstOrDefault(f=>f.Id==followObj.FollowerId);
+    if(followObj==null)
+    {
+        return Results.BadRequest();
+    }
+    
+    followObj.Id=followings.Max(f=>f.Id)+1;
+    followings.Add(followObj);
+
+    return Results.Created($"/followers/{followObj.Id}",new FollowerDTO
+    {
+        Id=followObj.Id,
+        PirateID=followObj.PirateId,
+        PirateDTO=new PirateDTO
+        {
+            Id=pirateDetails.Id,
+            Name=pirateDetails.Name,
+            Age=pirateDetails.Age,
+            Nationality=pirateDetails.Nationality,
+            Rank=pirateDetails.Rank,
+            Ship=pirateDetails.Ship,
+            ImageURL=pirateDetails.ImageURL        
+        },
+        FollowerId=followObj.FollowerId,
+        FollowerObjDTO=new PirateDTO
+        {
+             Id=followerObj.Id,
+            Name=followerObj.Name,
+            Age=followerObj.Age,
+            Nationality=followerObj.Nationality,
+            Rank=followerObj.Rank,
+            Ship=followerObj.Ship,
+            ImageURL=followerObj.ImageURL 
+        }
+    });
+});
+
 
 app.Run();
