@@ -1,3 +1,5 @@
+namespace buccaneerbantertheblackpearlt1.Models;
+
 public class FollowerDTO
 {   
     public int Id{get;set;}

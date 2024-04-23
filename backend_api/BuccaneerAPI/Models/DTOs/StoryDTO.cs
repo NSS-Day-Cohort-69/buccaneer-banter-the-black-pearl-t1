@@ -1,3 +1,5 @@
+namespace buccaneerbantertheblackpearlt1.Models.DTOs;
+
 public class StoryDTO
 {
     public int id{get;set;}
