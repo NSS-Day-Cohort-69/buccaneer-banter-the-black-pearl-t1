@@ -284,6 +284,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCors();
 
 var app = builder.Build();
 
@@ -292,20 +293,40 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseCors(options =>
+                {
+                    options.AllowAnyOrigin();
+                    options.AllowAnyMethod();
+                    options.AllowAnyHeader();
+                });
 }
 
 app.UseHttpsRedirection();
 
-//Add Follower
-// app.MapPost("/api/Follow",(Follower followObj)=>
-// {
-//     if(followObj==null)
-//     {
-//         return Results.BadRequest();
-//     }
+// Add Follower
+app.MapPost("/followers",(Follower followObj)=>
+{
+    Pirate pirateDetails=pirates.FirstOrDefault(p=>p.Id==followObj.PirateId);
+    Pirate followerObj=pirates.FirstOrDefault(f=>f.Id==followObj.FollowerId);
+    if(followObj==null)
+    {
+        return Results.BadRequest();
+    }
     
-//    // followObj.Id=follwer
-// });
+    followObj.Id=followings.Max(f=>f.Id)+1;
+    followings.Add(followObj);
+
+    return Results.Created($"/api/follow/{followObj.Id}",new FollowerDTO
+    {
+        Id=followObj.Id,
+        PirateID=followObj.PirateId,
+        PirateDTO=new PirateDTO
+        {
+            Id=pirateDetails.Id
+        },
+        FollowerId=followObj.FollowerId
+    });
+});
 
 
 app.Run();
