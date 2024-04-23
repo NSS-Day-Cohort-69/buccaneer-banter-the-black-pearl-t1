@@ -43,11 +43,11 @@ const StoryFooter = ({ myFavoriteScallywags, getFavoritePirates }) => {
 
 
     const showFollow = () => {
-        const alreadyFollow = myFavoriteScallywags.find(rel => rel.pirateId === story.pirate.id)
+        const alreadyFollow = myFavoriteScallywags.find(rel => rel.pirateId === story.pirateDTO.id)
         if (!alreadyFollow) {
             return <button
                 onClick={() => {
-                    follow(pirate_id, story.pirate.id, getFavoritePirates)
+                    follow(pirate_id, story.pirateDTO.id, getFavoritePirates)
                     setOpen(false);
                     window.clearTimeout(timerRef.current);
                     timerRef.current = window.setTimeout(() => {
@@ -62,7 +62,7 @@ const StoryFooter = ({ myFavoriteScallywags, getFavoritePirates }) => {
     return (<>
         <Toast.Provider swipeDirection={"right"} duration={5000}>
             <div className={styles.story__footer}>
-                Written by: {story.pirate.name}
+                Written by: {story.pirateDTO.name}
                 {showFollow()}
             </div>
 
@@ -75,7 +75,7 @@ const StoryFooter = ({ myFavoriteScallywags, getFavoritePirates }) => {
                     Scallywag Added
                 </Toast.Title>
                 <Toast.Description className={styles.ToastDescription}>
-                    You have followed {story.pirate.name}
+                    You have followed {story.pirateDTO.name}
                 </Toast.Description>
                 <Toast.Action
                     asChild
@@ -83,7 +83,7 @@ const StoryFooter = ({ myFavoriteScallywags, getFavoritePirates }) => {
                     className={styles.ToastAction}
                     onClick={(e) => {
                         e.preventDefault();
-                        unfollow(pirate_id, story.pirate.id, getFavoritePirates)
+                        unfollow(pirate_id, story.pirateDTO.id, getFavoritePirates)
                         setOpen(false)
                     }}
                 >

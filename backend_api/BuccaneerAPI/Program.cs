@@ -303,6 +303,48 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.MapGet("/pirates/{id}", (int id) =>
+{
+    Pirate pirate = pirates.FirstOrDefault(p => p.Id == id);
+
+    return new PirateDTO
+    {
+        Id = pirate.Id,
+        Name = pirate.Name,
+        Age = pirate.Age,
+        Nationality = pirate.Nationality,
+        Rank = pirate.Rank,
+        Ship = pirate.Ship,
+        ImageURL = pirate.ImageURL
+    };
+});
+
+app.MapGet("/stories", () =>
+{
+    foreach (Story story in stories)
+    {
+        story.Pirate = pirates.FirstOrDefault(p => p.Id == story.PirateId);
+    }
+
+    return stories.Select(s => new StoryDTO
+    {
+        Id = s.Id,
+        PirateId = s.PirateId,
+        Title = s.Title,
+        Content = s.Content,
+        Date = s.Date,
+        PirateDTO = new PirateDTO
+        {
+            Id = s.Pirate.Id,
+            Name = s.Pirate.Name,
+            Age = s.Pirate.Age,
+            Nationality = s.Pirate.Nationality,
+            Rank = s.Pirate.Rank,
+            Ship = s.Pirate.Ship,
+            ImageURL = s.Pirate.ImageURL
+        }
+    });
+});
 // Add Follower
 app.MapPost("/followers",(Follower followObj)=>
 {
@@ -316,15 +358,31 @@ app.MapPost("/followers",(Follower followObj)=>
     followObj.Id=followings.Max(f=>f.Id)+1;
     followings.Add(followObj);
 
-    return Results.Created($"/api/follow/{followObj.Id}",new FollowerDTO
+    return Results.Created($"/followers/{followObj.Id}",new FollowerDTO
     {
         Id=followObj.Id,
         PirateID=followObj.PirateId,
         PirateDTO=new PirateDTO
         {
-            Id=pirateDetails.Id
+            Id=pirateDetails.Id,
+            Name=pirateDetails.Name,
+            Age=pirateDetails.Age,
+            Nationality=pirateDetails.Nationality,
+            Rank=pirateDetails.Rank,
+            Ship=pirateDetails.Ship,
+            ImageURL=pirateDetails.ImageURL        
         },
-        FollowerId=followObj.FollowerId
+        FollowerId=followObj.FollowerId,
+        FollowerObjDTO=new PirateDTO
+        {
+             Id=followerObj.Id,
+            Name=followerObj.Name,
+            Age=followerObj.Age,
+            Nationality=followerObj.Nationality,
+            Rank=followerObj.Rank,
+            Ship=followerObj.Ship,
+            ImageURL=followerObj.ImageURL 
+        }
     });
 });
 
