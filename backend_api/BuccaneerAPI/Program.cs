@@ -462,4 +462,34 @@ app.MapDelete("/followers/{id}",(int id)=>
 
     return Results.NoContent();
 });
+// If success, return response.Ok
+app.MapGet("/pirates", (string? name, string? ship) =>
+{
+    PirateDTO pirateObj = null;
+    foreach(Pirate pirate in pirates)
+    {
+        if (pirate.Name == name && pirate.Ship == ship)
+        {
+            pirateObj = new PirateDTO
+            {
+                Id = pirate.Id,
+                Name = pirate.Name,
+                Age = pirate.Age,
+                Nationality = pirate.Nationality,
+                Rank = pirate.Rank,
+                Ship = pirate.Ship,
+                ImageURL = pirate.ImageURL
+            };
+        }
+    }
+    if (pirateObj == null)
+    {
+        return Results.BadRequest();
+    }
+    else
+    {
+    return Results.Ok(pirateObj);
+    }
+});
+
 app.Run();
