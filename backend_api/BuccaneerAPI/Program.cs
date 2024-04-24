@@ -391,7 +391,7 @@ app.MapGet("/followers/{id}", (int id) =>
     List<Follower> filteredFollowers = new List<Follower>();
     foreach (Follower follower in followings)
     {
-        if (follower.PirateId == id)
+        if (follower.FollowerId == id)
         {
             follower.Pirate = pirates.FirstOrDefault(p => p.Id == follower.PirateId);
             follower.FollowerObj = pirates.FirstOrDefault(p => p.Id == follower.FollowerId);
